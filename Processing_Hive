@@ -1,0 +1,54 @@
+#HIVE Processing
+
+
+
+#Create table postsdata  
+hive>CREATE TABLE postsdata (Id int, Score int, ViewCount int, OwnerUserId int, Title string, Tags string) row format delimited fields terminated by ',';
+
+#Load the pig processed filtered data from the cloud storage and overwrite the table 
+hive>LOAD DATA INPATH 'gs://dataproc-staging-us-central1-51617460704-vfhcwe8k/CT_Assignment_1/PigOutputFile.csv/outputfile' OVERWRITE INTO TABLE postsdata;
+
+#Query1 - The top 10 posts by score.
+hive>select postsdata.Id, postsdata.Score, postsdata.UserId from postsdata order by Score desc limit 10;
+hive>set hive.cli.print.header=true;
+#Output:-
+             postsdata.id    postsdata.score postsdata.owneruserid
+             11227809        25903           87234
+             927358          23303           89904
+             2003505         18475   		95592
+             292357  		12812   		6068
+             231767  		11528   		18300
+             477816  		10902   		12870
+             348170  		10062   		14069
+             5767325	    9899    		364969
+             6591213 		9764    		338204
+             1642028 		9545    		87234
+
+#Query2 - The top 10 users by post score         
+hive>select postsdata.owneruserid, sum(postsdata.score) as total_score from postsdata
+    >group by owneruserid
+    >order by total_score desc
+    >limit 10;
+#Output:-
+            postsdata.owneruserid   total_score
+            87234   				37624
+            4883    				28779
+            9951    				26764
+            6068    				25889
+            89904   				23978
+            51816   				23680
+            49153   				20183
+            179736  				19483
+            95592   				19440
+            63051   				19316 
+        			
+
+#Query3 - The number of distinct users, who used the word “cloud” in one of their posts         
+hive>select count(distinct owneruserid) as count from postsdata where (title like '%cloud %' or tags like '%cloud %');
+#Output:-  
+            342
+ 
+
+Referencing:-
+
+https://stackoverflow.com/questions/26181454/just-get-column-names-from-hive-table -- to print columns with data in hive

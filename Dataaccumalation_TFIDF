@@ -1,0 +1,29 @@
+TASK 4- 
+
+Using Hive download the cumalative titles for each of the users in the list of top 10 users from task 3.
+
+hive>create table TopPost(owneruserid int, title string);
+
+hive>insert into TopPost;
+
+hive>select postsdata.owneruserid, postsdata.title from posts where userid in (select postsdata.owneruserid, sum(postsdata.score) as total_score from postsdata
+    >group by postsdata.owneruserid
+    >order by total_score desc
+    >limit 10;);
+    >GROUP BY posts.owneruserid, posts.title
+
+
+hive>create table USER4883 (Title string);
+hive>insert into USER4883;
+hive>select title from TopPost where owneruserid=4883;
+ 
+Similarly, for each user create table and fetch only titles, this will help to download the tables with the content as all the ttles of the particular user in the table.
+
+HADOOP COMMAND- hadoop fs -cat /user/hive/warehouse/docs_users/* > 'filename'
+
+Once the files are in the local system, process using python notebook to calculate TF-IDF of the top 10 terms for each of the top 10 users. 
+
+
+Referencing:-
+
+https://stackoverflow.com/questions/17086642/how-to-export-a-hive-table-into-a-csv-file --  writing tables in a file to hadoop cloud storage

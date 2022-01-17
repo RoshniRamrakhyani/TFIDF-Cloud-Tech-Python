@@ -1,0 +1,11 @@
+1. find the maximum number of viewcounts.
+
+select MAX(Posts.ViewCount) AS max_viewcount from Posts 
+  output -    10030841
+
+2.select top 50000 * from Posts where Posts.ViewCount<10030842 ORDER BY Posts.ViewCount desc // Download -> QueryResults_1 
+3.select top 50000 * from Posts where Posts.ViewCount<127402 ORDER BY Posts.ViewCount desc // Download -> QueryResults_2
+4.select top 50000 * from Posts where Posts.ViewCount<74595 ORDER BY Posts.ViewCount desc // Download -> QueryResults_3
+5.select top 50000 * from Posts where Posts.ViewCount<53210 ORDER BY Posts.ViewCount desc // Download -> QueryResults_4
+
+*Note* - value 127402 for the point number 3 has come from the last value of QueryResult_1 
